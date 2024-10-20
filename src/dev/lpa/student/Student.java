@@ -119,7 +119,16 @@ public class Student {
         return "Student = %s %n%s%nCourses: %s%n%s".formatted(
                 studentId, demographics, coursesEnrolled, engagementData);
     }
-
+    
+    public String toJSON() {
+        return new StringJoiner(", ", "{", "}")
+                 .add("\"studentId\":" + studentId)
+                 .add("\"demographics\":" + demographics.toJSON())
+//                 .add("\"coursesEnrolled\":" + coursesEnrolled)
+//                 .add("\"engagementMap\":" + engagementMap)
+                 .toString();
+    }
+    
     public List<String> getEngagementRecords() {
 
         int i = 0;
