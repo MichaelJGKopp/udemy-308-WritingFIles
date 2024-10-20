@@ -65,6 +65,9 @@ public class Main {
             Thread.sleep(2_000);
             System.out.print(".");
           }
+          if (count % 10 == 0) {
+            writer.flush();
+          }
         }
       }
     } catch (IOException e) {
