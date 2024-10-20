@@ -2,6 +2,7 @@ package dev.lpa.student;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.StringJoiner;
 
 public class CourseEngagement {
 
@@ -72,7 +73,19 @@ public class CourseEngagement {
         return "%s,%s,%d,%s".formatted(courseCode,
                 Month.of(lastActiveMonth), lastActiveYear, engagementType);
     }
-
+    
+    public String toJSON() {
+        return new StringJoiner(", ", "{", "}")
+                 .add("\"courseCode\":\"" + courseCode + "\"")
+                 .add("\"engagementType\":\"" + engagementType + "\"")
+                 .add("\"enrollmentMonth\":" + enrollmentMonth)
+                 .add("\"enrollmentYear\":" + enrollmentYear)
+                 .add("\"lastLecture\":" + lastLecture)
+                 .add("\"lastActiveMonth\":" + lastActiveMonth)
+                 .add("\"lastActiveYear\":" + lastActiveYear)
+                 .toString();
+    }
+    
     void recordLastActivity(int lectureNumber, int month, int year) {
 
         if (lectureNumber > lastLecture) {
