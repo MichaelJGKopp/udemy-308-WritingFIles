@@ -1,5 +1,8 @@
 package dev.lpa.student;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -7,17 +10,20 @@ public class Challenge {
   
   public static void main(String[] args) {
     
-    String header = """
-      Student Id,Country Code,Enrolled Year,Age,Gender,\
-      Experienced,Course Code,Engagement Month,Engagement Year,\
-      Engagement Type""";
-    
+    String delimiter = "," + System.lineSeparator();
     Course jmc = new Course("JMC", "Java Masterclass");
     Course pymc = new Course("PYC", "Python Masterclass");
-    var students = Stream.generate(() -> Student.getRandomStudent(jmc, pymc))
-      .limit(1)
-       .map(Student::toString)
-       .collect(Collectors.joining(",", "[,", "]"));
+    var students = Stream
+                     .generate(() -> Student.getRandomStudent(jmc, pymc))
+                     .limit(2)
+                     .map(Student::toJSON)
+                     .collect(Collectors.joining(delimiter, "[", "]"));
+    System.out.println(students);
     
+    try {
+      Files.writeString(Path.of("students.json"), students);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 }
