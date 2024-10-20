@@ -25,7 +25,7 @@ public class Main {
     Course pymc = new Course("PYC", "Python Masterclass");
     List<Student> students = Stream
                                .generate(() -> Student.getRandomStudent(jmc, pymc))
-                               .limit(5)
+                               .limit(25)
                                .toList();
 
 //    System.out.println(header);
@@ -55,14 +55,22 @@ public class Main {
           Files.newBufferedWriter(Path.of("take2.csv"))) {
       writer.write(header);
       writer.newLine();
+      int count = 0;
       for (Student student : students) {
         for (var record: student.getEngagementRecords()) {
           writer.write(record);
           writer.newLine();
+          count++;
+          if (count % 5 == 0) {
+            Thread.sleep(2_000);
+            System.out.print(".");
+          }
         }
       }
     } catch (IOException e) {
       e.printStackTrace();
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
     }
     
     try (FileWriter writer =
