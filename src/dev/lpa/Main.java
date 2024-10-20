@@ -3,6 +3,7 @@ package dev.lpa;
 import dev.lpa.student.Course;
 import dev.lpa.student.Student;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,6 +49,19 @@ public class Main {
     } catch (IOException e) {
       e.printStackTrace();
     }
-   
+    
+    try (BufferedWriter writer =
+          Files.newBufferedWriter(Path.of("take2.csv"))) {
+      writer.write(header);
+      writer.newLine();
+      for (Student student : students) {
+        for (var record: student.getEngagementRecords()) {
+          writer.write(record);
+          writer.newLine();
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
